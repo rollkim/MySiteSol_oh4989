@@ -97,11 +97,19 @@ Next.js 16 App Router (`output: 'standalone'`) · React 19 · TypeScript 5 · tR
 
 "작업내용 작성" 요청 시:
 ```
-C:\_Dev\_md_doc\conlab\projects\ocy\worklog\작업로그_oh4989_YYYYMMDD.md
+docs/project/worklog/작업로그_oh4989_YYYYMMDD.md
 ```
-같은 날 파일이 있으면 이어서 추가(append). Markdown, Obsidian 연동. 항목: 작업유형 / 대상파일 / 작업내용 / 변경요약 / 이슈.
+같은 날 파일이 있으면 이어서 추가(append). Markdown. 항목: 작업유형 / 대상파일 / 작업내용 / 변경요약 / 이슈.
 
-**프로젝트 문서 루트: `C:\_Dev\_md_doc\conlab\projects\ocy\`** — 계획·분석·위키 등 모든 문서를 이 폴더 하위에 작성한다.
+**프로젝트 문서 루트: `docs/project/`** — 계획·분석·위키 등 모든 문서를 여기에 쓴다.
+
+**저장소 안에 두는 이유**: 다른 PC·다른 작업자와 작업 이력을 공유해야 한다. Obsidian Vault에 사본을 두면 양쪽이 갈라지므로 **사본을 만들지 않는다.** Obsidian에서 보려면 Vault 안에 이 폴더를 가리키는 junction을 만든다(관리자 권한 불필요):
+
+```
+mklink /J "C:\_Dev\_md_doc\conlab\projects\ocy\repo-docs" "C:\_Hope\Ohsite\oh4989\docs\project"
+```
+
+⚠️ **자격증명 파일(`info.md` 등)은 저장소에 넣지 않는다.** Obsidian에만 둔다 (RULE-1).
 
 ## [RULE-9] 문서 작성 시 인덱스 등록
 
