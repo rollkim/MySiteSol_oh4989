@@ -1,0 +1,50 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files — 실제 값이 담긴 파일은 절대 올리지 않는다 (CLAUDE.md RULE-1)
+.env*
+# 단, 값이 비어 있는 템플릿은 올린다. 다른 PC에서 무엇을 채워야 하는지 알아야 한다
+!.env.example
+
+# 배포 산출물 (프로젝트 밖 ../oh4989-release 에 생성되지만 방어적으로 둔다)
+/oh4989-release/
+
+# SSH 키가 실수로 들어오는 것을 막는다
+id_ed25519*
+*.key
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

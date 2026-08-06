@@ -1,0 +1,28 @@
+# 줄바꿈 정책
+#
+# Windows에서 개발하고 Linux 서버로 배포한다. git의 기본 동작(core.autocrlf=true)은
+# 체크아웃 시 LF를 CRLF로 바꾸는데, 그 상태의 셸 스크립트를 서버로 올리면
+# bash가 `\r`을 명령의 일부로 읽어 `$'\r': command not found`로 죽는다.
+# (2026-08-06 실제로 겪은 문제 — docs/PORTING.md 참조)
+#
+# 아래 설정으로 저장소와 작업 디렉토리 양쪽에서 LF를 유지한다.
+# Next·Node·PostgreSQL 모두 LF에 문제가 없다.
+
+* text=auto eol=lf
+
+# 서버로 직접 전송되는 파일은 특히 명시한다
+*.sh   text eol=lf
+*.conf text eol=lf
+*.cjs  text eol=lf
+*.mjs  text eol=lf
+
+# 바이너리는 변환하지 않는다
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
+*.pdf  binary
