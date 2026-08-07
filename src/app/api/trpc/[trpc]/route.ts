@@ -14,6 +14,16 @@ function handler(req: Request) {
     req,
     router: appRouter,
     createContext: () => createTRPCContext({ headers: req.headers }),
+    /**
+     * 예상 밖 서버 오류를 콘솔(PM2 로그)에 원인까지 남긴다.
+     * 클라이언트 응답에는 cause가 직렬화되지 않아, 여기 안 찍으면
+     * DB 연결 실패 같은 인프라 원인을 서버에서 볼 방법이 없다.
+     */
+    onError({ error, path }) {
+      if (error.code === "INTERNAL_SERVER_ERROR") {
+        console.error(`[trpc] ${path ?? "?"} 실패:`, error.cause ?? error);
+      }
+    },
   });
 }
 

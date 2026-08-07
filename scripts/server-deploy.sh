@@ -89,6 +89,13 @@ fi
 [ -f "$TARBALL" ] || { echo "✗ $TARBALL 이 없습니다 (scp로 올렸는지 확인)"; exit 1; }
 [ -f "$ENV_FILE" ] || { echo "✗ $ENV_FILE 이 없습니다"; exit 1; }
 
+# env 형식 사전검증 — 2026-08-06 장애 재발 방지: SESSION_SECRET 붙여넣기 때 DATABASE_URL
+# 줄이 깨져 호스트가 'base'로 파싱됐다(getaddrinfo EAI_AGAIN base). 값은 출력하지 않는다.
+grep -Eq '^DATABASE_URL=postgresql://[^@[:space:]]+@127\.0\.0\.1:5432/oh4989[[:space:]]*$' "$ENV_FILE" \
+  || { echo "✗ $ENV_FILE 의 DATABASE_URL 형식이 다릅니다 — postgresql://oh4989_app:<비밀번호>@127.0.0.1:5432/oh4989 한 줄이어야 합니다"; exit 1; }
+SECRET_LEN=$(grep -E '^SESSION_SECRET=' "$ENV_FILE" | head -1 | cut -d= -f2- | tr -d '[:space:]' | wc -c)
+[ "$SECRET_LEN" -ge 32 ] || { echo "✗ $ENV_FILE 의 SESSION_SECRET 이 없거나 32자 미만입니다"; exit 1; }
+
 LIVE="$(live_slot)"
 TARGET=$([ "$LIVE" = a ] && echo b || echo a)
 

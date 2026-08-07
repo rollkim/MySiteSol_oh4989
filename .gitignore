@@ -48,3 +48,6 @@ id_ed25519*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# JetBrains 프로젝트 설정 — dataSources.xml에 DB 접속 정보가 들어간다 (CLAUDE.md RULE-1)
+.idea/

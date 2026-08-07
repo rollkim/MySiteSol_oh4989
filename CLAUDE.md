@@ -34,12 +34,13 @@
 | 2 | `sharp` 리사이즈 → 서버 저장 | **브라우저 Canvas에서 2종(상세·썸네일) 생성 → FormData 업로드 → 서버는 검증·저장만** | 명율에 sharp 파이프라인이 실재하지 않음(실제는 Canvas + R2). 2GB 서버에서 libvips 메모리 경합 회피, 리눅스 바이너리 문제 소멸 |
 | 3 | "명율 자동매물등록 로직 이식" | **신규 개발** | 명율의 자동등록은 Puppeteer 네이버부동산 스크래핑(`naverScraper.ts`)이며, 본 프로젝트의 크롤링 금지 원칙과 충돌. 텍스트 붙여넣기 파서는 명율에 없음. 단 명율 `server/db.ts`의 가격 문자열 파서는 재사용 가치가 있음 |
 | 4 | §3 타입 표기 | `bigint PK autoincrement`→`bigint generated always as identity` · `tinyint`→`smallint` · `json`→`jsonb` · 일시→`timestamptz` (`decimal`·`char(10)`·`varchar`는 그대로) | PostgreSQL 전환에 따른 매핑 |
+| 5 | 지도: 카카오맵 웹 JS SDK | **네이버 지도(NCP Maps) Web Dynamic Map** | (2026-08-06 확정) ① 카카오 2026.7.21 개편으로 계정당 첫 활성화 앱만 무료 — 리스킨 판매 전제와 충돌 ② 네이버는 월 1,000만 건 무료 ③ 사장님 매물·고객 탐색이 네이버부동산 기준이라 시각 일관성 ④ 명율이 네이버 지도 기반이라 지오코딩·마커 실전 코드 참조 가능. `ssr:false` 원칙은 동일 유지 |
 
 ---
 
 ## [스택]
 
-Next.js 16 App Router (`output: 'standalone'`) · React 19 · TypeScript 5 · tRPC 11 + `@trpc/tanstack-react-query` · Drizzle ORM + **PostgreSQL 17** · Tailwind 4 · Node 22 · 카카오맵 JS SDK
+Next.js 16 App Router (`output: 'standalone'`) · React 19 · TypeScript 5 · tRPC 11 + `@trpc/tanstack-react-query` · Drizzle ORM + **PostgreSQL 17** · Tailwind 4 · Node 22 · **네이버 지도(NCP Maps) Web Dynamic Map** (SPEC 수정 이력 #5)
 
 ⚠️ Next.js 16은 학습 데이터와 다를 수 있다 — 구현 전 `node_modules/next/dist/docs/` 및 [AGENTS.md](AGENTS.md) 확인.
 

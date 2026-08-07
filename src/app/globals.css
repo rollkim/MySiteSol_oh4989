@@ -32,17 +32,22 @@
    static은 선언한 토큰을 전부 :root에 방출한다.
    ───────────────────────────────────────────────────────────── */
 @theme static {
-  /* 색 (§5-2) — 네이비 2단 구조: ink는 글자, accent는 "지금 눌린 것" */
-  --color-ink: #0f1c2e;
-  --color-ink-70: #3a4a5e;
-  --color-ink-40: #8894a3;
-  --color-line: #e4e8ee;
+  /* 색 — 2026-08-06 의뢰인 확정안(design_handoff_ohchaeyoung_realty README)으로 교체.
+     딥네이비 #0B2430(잉크·헤더) · 틸 #146B7C(액센트·CTA·가격 강조) · 골드 #E8C87A(강조 배지).
+     이전 가이드 v1.1 팔레트(#0F1C2E/#1F4E8C)는 이 확정안이 대체한다 */
+  --color-ink: #0b2430;
+  --color-ink-70: #3c4c54;
+  --color-ink-40: #7c8990;
+  --color-line: #e5dfd4;
   --color-surface: #ffffff;
-  --color-surface-alt: #f5f7fa;
-  --color-accent: #1f4e8c;
-  --color-accent-soft: #e7eef7;
-  --color-price: #0f1c2e;
+  --color-surface-alt: #f4f1eb;
+  --color-accent: #146b7c;
+  --color-accent-soft: #edf3f1;
+  --color-price: #0b2430;
   --color-alert: #c0392b;
+  --color-gold: #e8c87a;
+  --color-gold-deep: #8a6a12;
+  --color-gold-soft: #fbf3df;
 
   /* 서체 (§5-3) */
   --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
@@ -93,6 +98,97 @@
     outline-offset: 2px;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   가격 라벨 핀 — 확정 시안(baegot-map.html) 그대로:
+   흰 말풍선(보더+그림자) + 거래유형 색 점 6px + 가격(800 13px tnum) + 흰 꼬리.
+   방문(seen) = 회색 톤 다운 · 선택(act) = 딥네이비 반전 + 1.06배.
+   색 점의 거래유형은 카드의 텍스트 배지가 병행 전달한다(색 단독 아님).
+   네이버 지도 Marker icon.content(원시 HTML)라 raw CSS로 둔다.
+   ───────────────────────────────────────────────────────────── */
+.map-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 120ms;
+}
+.map-pin-bub {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px 4.5px;
+  background: var(--color-surface);
+  border: 1.5px solid rgb(11 36 48 / 0.14);
+  border-radius: 9px;
+  box-shadow: 0 3px 9px rgb(11 36 48 / 0.22);
+  white-space: nowrap;
+}
+.map-pin-dot { width: 6px; height: 6px; border-radius: 3px; flex: none; }
+.map-pin-pr {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-ink);
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+}
+.map-pin-tail {
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-top-color: var(--color-surface);
+  margin-top: -1px;
+  filter: drop-shadow(0 2px 1px rgb(11 36 48 / 0.12));
+}
+.map-pin-video { font-size: 8px; font-style: normal; color: var(--color-accent); }
+/* 방문(본 매물) — 톤 다운 */
+.map-pin--seen .map-pin-bub { background: #f0ede7; border-color: rgb(11 36 48 / 0.08); box-shadow: 0 1px 4px rgb(11 36 48 / 0.1); }
+.map-pin--seen .map-pin-pr { color: var(--color-ink-40); }
+.map-pin--seen .map-pin-tail { border-top-color: #f0ede7; }
+/* 선택·강조 — 딥네이비 반전 */
+.map-pin--on .map-pin-bub { background: var(--color-ink); border-color: var(--color-ink); transform: scale(1.06); }
+.map-pin--on .map-pin-pr { color: #fff; }
+.map-pin--on .map-pin-tail { border-top-color: var(--color-ink); }
+.map-pin--on { z-index: 50; }
+.map-pin:hover { transform: translateY(-1px); }
+
+/* 클러스터 — 틸 원 + 흰 테두리 + "N 매물" (확정 시안) */
+.map-cluster {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgb(20 107 124 / 0.93);
+  border: 2.5px solid #fff;
+  color: #fff;
+  box-shadow: 0 3px 10px rgb(11 36 48 / 0.3);
+  cursor: pointer;
+  transition: transform 150ms;
+  line-height: 1;
+}
+.map-cluster:hover { transform: scale(1.06); }
+.map-cluster b { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; }
+.map-cluster i { font-style: normal; font-size: 8.5px; font-weight: 600; opacity: 0.85; margin-top: 1px; }
+
+/* POI 라벨 — 공원·학교 등 (흰 halo 텍스트, 확정 시안) */
+.map-poi {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #2f4a45;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 5px #fff;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* 마커 등장 — 재검색 시 stagger fade-up (최대 20개까지 MapView가 delay를 준다) */
+@keyframes map-pin-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.map-pin-enter { animation: map-pin-in 220ms both; }
 
 /* prefers-reduced-motion 준수 (§5-6, 접근성 필수) */
 @media (prefers-reduced-motion: reduce) {
